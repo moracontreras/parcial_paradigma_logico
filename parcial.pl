@@ -20,6 +20,10 @@ elabora(vale, parrilladaDelMar).
 elabora(ale, hamburguesa).
 elabora(lu, sushi).
 elabora(mar, padThai).
+elabora(ale,lomoALaWellington).
+elabora(ale,pastaTrufada).
+elabora(ale,souffleDeQueso).
+%agregue elabora(ale,lomoALaWellington). elabora(ale,pastaTrufada). elabora(ale,souffleDeQueso).
 
 % cocinaEn(Restaurante, Chef)
 cocinaEn(pinpun, guille).
@@ -29,6 +33,9 @@ cocinaEn(sushiRock, lu).
 cocinaEn(olakease, lu).
 cocinaEn(guendis, ale).
 cocinaEn(cantin, mar).
+cocinaEn(cajaTaco, ale).
+%agregue cocinaEn(cajaTaco,ale).
+
 
 % tieneEstilo(Restaurante, Estilo)
 tieneEstilo(pinpun, bodegon(parqueChas, 6000)).
@@ -49,14 +56,14 @@ tieneEstilo(guendis, comidaRapida(5)).
 %PUNTO 1
 esCrack(Chef):-
     esChef(Chef),
-    trabajaEnAlMenos2RestaurantesOCocinaPadChai(Chef).
+    trabajaEnAlMenos2RestaurantesOCocinaPadThai(Chef).
 
 esChef(Chef):-
     elabora(Chef,_).
 
-trabajaEnAlMenos2RestaurantesOCocinaPadChai(Chef):-
+trabajaEnAlMenos2RestaurantesOCocinaPadThai(Chef):-
     elabora(Chef,padThai).
-trabajaEnAlMenos2RestaurantesOCocinaPadChai(Chef):-
+trabajaEnAlMenos2RestaurantesOCocinaPadThai(Chef):-
     cocinaEn(UnRestaurante,Chef),
     cocinaEn(OtroRestaurante,Chef),
     UnRestaurante\=OtroRestaurante.
@@ -64,9 +71,9 @@ trabajaEnAlMenos2RestaurantesOCocinaPadChai(Chef):-
 %PUNTO 2
 esOtaku(Chef):-
     esChef(Chef),
-    soloTrabajaEnRestauranteDeComidaJaponesa(Chef).
+    soloTrabajaEnRestaurantesDeComidaJaponesa(Chef).
 
-soloTrabajaEnRestauranteDeComidaJaponesa(Chef):-
+soloTrabajaEnRestaurantesDeComidaJaponesa(Chef):-
     forall(cocinaEn(Restaurante,Chef),tieneEstilo(Restaurante,oriental(japon))).
 
 %PUNTO 3
@@ -77,7 +84,7 @@ esTop(Plato):-
 esPlato(Plato):-
     receta(Plato,_,_).
 soloElaboradoPorCracks(Plato):-
-    elabora(_,Plato),
+    elabora(_,Plato), % para verificar que no sea true por ser false el antecedente
     forall(elabora(Chef,Plato),esCrack(Chef)).
 
 %PUNTO 4
